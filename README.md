@@ -221,11 +221,3 @@ print(f"Annualized Return: {stats['Average_Stock_Return']:.2%}")
 ## 📝 License & Disclaimer
 
 This tool is for educational and analytical purposes. Financial data is provided by Yahoo Finance. Users should verify results and consider multiple data sources for investment decisions. Beta calculations are historical and may not predict future performance.
-
-## 🤝 Contributing
-
-Feel free to contribute improvements:
-- Add support for additional data sources
-- Implement rolling beta calculations
-- Add sector beta comparisons
-- Enhance visualization options
