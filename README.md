@@ -1,223 +1,216 @@
-# Equity-Research-Analyst-PJ
-# Beta Calculator for DCF Analysis
+# Beta Calculator with Risk-Free Rate
 
-A comprehensive Python tool for calculating stock beta coefficients relative to market indices, designed specifically for DCF (Discounted Cash Flow) valuation models. The tool downloads real-time financial data from Yahoo Finance and performs statistical regression analysis to determine systematic risk.
-
-## 🎯 Purpose
-
-Beta (β) measures a stock's volatility relative to the overall market, making it essential for:
-- **DCF Analysis**: Calculating the cost of equity using CAPM (Capital Asset Pricing Model)
-- **Risk Assessment**: Understanding systematic risk exposure
-- **Portfolio Management**: Evaluating volatility characteristics
-- **Investment Analysis**: Comparing stocks' market sensitivity
+A comprehensive Python tool for calculating stock beta coefficients with confidence intervals and government bond yields for DCF valuation and CAPM cost of equity analysis.
 
 ## 🚀 Features
 
-### Core Functionality
-- **Automated Data Download**: Fetches historical price data from Yahoo Finance
-- **Beta Calculation**: Performs linear regression to calculate beta coefficient
-- **Statistical Analysis**: Provides comprehensive statistical metrics (R², correlation, alpha)
-- **Visual Analysis**: Creates scatter plots with regression lines
-- **Multi-Format Export**: Saves results to Excel with multiple sheets and optional text summaries
+- **Beta Calculation**: Regression-based beta using logarithmic returns
+- **Confidence Intervals**: Statistical confidence intervals for beta estimates (90%, 95%, 99%)
+- **Government Bond Yields**: Automatic download of 10-year government bond yields as risk-free rate
+- **CAPM Cost of Equity**: Complete cost of equity calculation using CAPM formula
+- **Multiple Markets**: Support for stocks and indices from major global markets
+- **Data Export**: Export results to Excel with comprehensive data sheets
+- **Visualization**: Regression plots with confidence bands
 
-### Advanced Features
-- **Flexible Time Periods**: Supports various periods (1d to max) and intervals
-- **Custom Date Ranges**: Option to specify exact start/end dates
-- **Robust Data Handling**: Handles MultiIndex DataFrames and missing data
-- **International Markets**: Works with global stock exchanges
-- **Quality Assessment**: Evaluates beta reliability for DCF usage
+## 📊 Supported Markets
 
-## 📋 Requirements
+### Stock Exchanges
+- **USA**: NASDAQ, NYSE (e.g., AAPL, MSFT, GOOGL)
+- **Italy**: Borsa Italiana (e.g., ENI.MI, ENEL.MI, ISP.MI)
+- **Germany**: XETRA (e.g., SAP.DE, VOW3.DE)
+- **Netherlands**: Euronext Amsterdam (e.g., ASML.AS)
+- **Switzerland**: SIX Swiss Exchange (e.g., NESN.SW)
+- **And many more via Yahoo Finance**
 
-```python
-# Required packages
-yfinance>=0.2.0
-pandas>=1.5.0
-numpy>=1.24.0
-matplotlib>=3.6.0
-scipy>=1.10.0
-openpyxl>=3.1.0  # For Excel export
-```
+### Market Indices
+- **S&P 500**: ^GSPC
+- **NASDAQ**: ^IXIC
+- **FTSE MIB (Italy)**: FTSEMIB.MI
+- **DAX (Germany)**: ^GDAXI
+- **CAC 40 (France)**: ^FCHI
+- **FTSE 100 (UK)**: ^FTSE
+- **Nikkei (Japan)**: ^N225
 
-Install with:
+### Government Bonds (10-Year)
+- **USA**: US Treasury (^TNX)
+- **Germany**: German Bund (^TNX-DE)
+- **Italy**: Italian BTP (ITALY10Y-EUR)
+- **France**: French OAT (FRANCE10Y-EUR)
+- **Spain**: Spanish Bond (SPAIN10Y-EUR)
+- **UK**: UK Gilt (^TNXUK)
+- **Japan**: Japanese Bond (^TNX-JP)
+- **Canada**: Canadian Bond (^TNX-CA)
+- **Australia**: Australian Bond (^TNX-AU)
+
+## 🛠️ Installation
+
+### Prerequisites
 ```bash
 pip install yfinance pandas numpy matplotlib scipy openpyxl
 ```
 
-## 🔧 Usage
-
-### Quick Start
-```python
-from beta_calculator import BetaCalculator
-
-# Initialize calculator
-calc = BetaCalculator()
-
-# Download data (example: Apple vs S&P 500)
-calc.download_data('AAPL', '^GSPC', period='2y')
-
-# Calculate returns and beta
-calc.calculate_returns()
-calc.calculate_beta()
-
-# Show regression plot
-calc.plot_regression()
-
-# Save to Excel
-calc.save_to_excel(stock_symbol='AAPL', index_symbol='SP500')
+### Clone Repository
+```bash
+git clone https://github.com/yourusername/beta-calculator.git
+cd beta-calculator
 ```
 
-### Interactive Mode
-Run the script directly for guided input:
+## 🔧 Usage
+
+### Basic Usage
 ```bash
 python beta_calculator.py
 ```
 
-The interactive mode will prompt for:
-- Stock ticker symbol
-- Reference index ticker
-- Time period and interval
-- Custom date range (optional)
-- Output preferences
+### Interactive Prompts
+The program will guide you through:
 
-## 📊 Supported Markets & Tickers
+1. **Stock Selection**: Enter ticker symbol (e.g., AAPL, ENI.MI)
+2. **Market Index**: Choose benchmark index (e.g., ^GSPC, FTSEMIB.MI)
+3. **Risk-Free Rate**: Select country for 10-year bond or enter manually
+4. **Time Period**: Choose analysis period (recommended: 2y)
+5. **Data Interval**: Select frequency (recommended: 1d)
+6. **Confidence Intervals**: Optional statistical confidence bands
+7. **Market Risk Premium**: Required for cost of equity calculation
 
-### Stock Examples
-- **Italian Market**: ENI.MI, ENEL.MI, ISP.MI, UCG.MI, TIT.MI
-- **US Market**: AAPL, MSFT, GOOGL, TSLA, NVDA
-- **Other Markets**: Add appropriate suffixes (.L for London, .TO for Toronto, etc.)
+### Example Session
+```
+Stock ticker: AAPL
+Index ticker: ^GSPC
+Country for 10Y bond: USA
+Period: 2y
+Interval: 1d
+Calculate confidence intervals? y
+Confidence level: 0.95
+Market risk premium (%): 6.5
+```
 
-### Index Examples
-- **FTSE MIB (Italy)**: FTSEMIB.MI
-- **S&P 500 (USA)**: ^GSPC
-- **NASDAQ**: ^IXIC
-- **DAX (Germany)**: ^GDAXI
-- **FTSE 100 (UK)**: ^FTSE
-
-## 📈 Output & Results
+## 📈 Output
 
 ### Console Output
 ```
-BETA ANALYSIS RESULTS
-==================================================
-Beta: 1.2450
-Alpha: 0.001234 (0.1234%)
-R-squared: 0.6789
-Correlation: 0.8234
-P-value: 0.000001
-Standard Error: 0.045623
-Number of observations: 504
+BETA RESULTS:
+Beta: 1.2543
+Alpha: 0.002147
+R-squared: 0.7431
+Correlation: 0.8620
+Observations: 504
 
-INTERPRETATION
-==================================================
-The stock is more volatile than the market (Beta > 1)
+BETA WITH CONFIDENCE INTERVALS:
+Beta: 1.2543
+95% CI: [1.1205, 1.3881]
+Standard Error: 0.067321
+T-statistic: 18.634
+P-value: 0.000000
+R-squared: 0.7431
+
+COST OF EQUITY (CAPM):
+Risk-free rate: 4.25%
+Beta: 1.2543
+Market risk premium: 6.50%
+Cost of Equity: 12.40%
+95% CI: [11.53%, 13.27%]
 ```
 
-### Excel Export (Multiple Sheets)
-1. **Beta Results**: Key metrics and analysis parameters
-2. **Stock Data**: Historical price data for the stock
-3. **Index Data**: Historical price data for the index
-4. **Returns**: Daily/period returns for both securities
-5. **Statistics**: Additional statistical measures
-6. **Interpretation**: Qualitative analysis and DCF recommendations
+### Excel Export
+- **Results Sheet**: All calculated metrics and statistics
+- **Stock Data**: Historical stock price data
+- **Index Data**: Historical index data
+- **Bond Data**: Government bond yield data (if available)
+- **Returns**: Calculated logarithmic returns
 
-### Key Metrics Explained
-- **Beta (β)**: Market sensitivity coefficient
-  - β > 1: More volatile than market
-  - β < 1: Less volatile than market
-  - β < 0: Moves opposite to market
-- **Alpha (α)**: Excess return vs. market
-- **R-squared**: Regression quality (how well market explains stock movements)
-- **Correlation**: Linear relationship strength
+## 📋 Methodology
 
-## 🎛️ Configuration Options
+### Beta Calculation
+- Uses **logarithmic returns** for better statistical properties
+- **Linear regression**: Stock returns vs. Market returns
+- **Formula**: β = Cov(Rs, Rm) / Var(Rm)
 
-### Time Periods
-- Short-term: `1d`, `5d`, `1mo`, `3mo`
-- Medium-term: `6mo`, `1y`, `2y`
-- Long-term: `5y`, `10y`, `max`
-- Current year: `ytd`
+### Confidence Intervals
+- **T-distribution** based confidence intervals
+- **Formula**: β ± t-critical × Standard Error
+- Degrees of freedom: n - 2
 
-### Data Intervals
-- **Daily**: `1d` (recommended for beta calculation)
-- **Weekly**: `1wk`
-- **Monthly**: `1mo`
-- **Intraday**: `1m`, `5m`, `15m`, `30m`, `1h` (for short periods only)
+### CAPM Cost of Equity
+- **Formula**: Cost of Equity = Rf + β × (Rm - Rf)
+- **Rf**: Risk-free rate (10-year government bond)
+- **β**: Calculated beta coefficient
+- **Market Risk Premium**: User-provided based on research
 
-## 🔍 Interpretation Guidelines
+## 🎯 Use Cases
 
-### Beta Interpretation for DCF
-- **β > 1.2**: High systematic risk, very volatile
-- **1.0 < β < 1.2**: Elevated risk, more volatile than market
-- **0.8 < β < 1.0**: Moderate risk, similar to market
-- **0.5 < β < 0.8**: Lower risk, less volatile than market
-- **β < 0.5**: Low systematic risk or negative correlation
+### DCF Valuation
+- Calculate cost of equity for discount rate
+- Assess systematic risk of investment
+- Validate beta reliability with confidence intervals
 
-### R-squared Quality Assessment
-- **R² > 0.7**: Excellent - Market explains stock movements well
-- **R² > 0.5**: Good - Moderately strong relationship
-- **R² > 0.3**: Average - Weak relationship
-- **R² < 0.3**: Poor - Consider sector beta instead
+### Portfolio Management
+- Risk assessment and portfolio construction
+- Benchmark comparison and tracking error analysis
+- Performance attribution
+
+### Academic Research
+- Empirical finance studies
+- Risk factor analysis
+- Market efficiency testing
+
+## 📚 Market Risk Premium Guidance
+
+### Typical Ranges by Region
+- **USA**: 5.0% - 7.0%
+- **Europe (Developed)**: 5.0% - 8.0%
+- **Emerging Markets**: 7.0% - 12.0%
+- **Conservative Estimate**: 6.0%
+- **Historical Long-term Average**: 6.5%
+
+### Sources for Research
+- **Academic Studies**: Damodaran, Ibbotson, Morningstar
+- **Investment Banks**: Goldman Sachs, Morgan Stanley equity risk premium surveys
+- **Central Banks**: Federal Reserve, ECB financial stability reports
+- **Professional Services**: PwC, EY valuation surveys
+
+## ⚠️ Important Notes
+
+### Data Quality
+- Data sourced from Yahoo Finance
+- Some international bonds may have limited availability
+- Manual input option available for all parameters
+
+### Statistical Considerations
+- Minimum 30 observations recommended for reliable beta
+- R-squared indicates explanatory power of market relationship
+- Confidence intervals help assess beta reliability
 
 ### DCF Usage Recommendations
-- **✅ Reliable**: R² > 0.5 with 100+ observations
-- **⚠️ Caution**: R² > 0.3 with sufficient data
-- **❌ Unreliable**: R² < 0.3, consider industry beta
+- **R² > 0.5**: Reliable beta for DCF
+- **R² 0.3-0.5**: Use with caution, consider industry beta
+- **R² < 0.3**: Consider alternative beta sources
 
-## 🛠️ Advanced Usage
+## 🤝 Contributing
 
-### Custom Analysis Period
-```python
-calc.download_data(
-    stock_symbol='ENI.MI',
-    index_symbol='FTSEMIB.MI',
-    start_date='2020-01-01',
-    end_date='2024-01-01'
-)
-```
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/new-feature`)
+3. Commit changes (`git commit -am 'Add new feature'`)
+4. Push to branch (`git push origin feature/new-feature`)
+5. Create Pull Request
 
-### Batch Analysis
-```python
-stocks = ['AAPL', 'MSFT', 'GOOGL']
-results = {}
+## 📄 License
 
-for stock in stocks:
-    calc = BetaCalculator()
-    calc.download_data(stock, '^GSPC', period='2y')
-    calc.calculate_returns()
-    calc.calculate_beta()
-    results[stock] = calc.beta
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Statistical Summary
-```python
-# Get comprehensive statistics
-stats = calc.get_summary_stats()
-print(f"Annualized Volatility: {stats['Stock_Volatility']:.2%}")
-print(f"Annualized Return: {stats['Average_Stock_Return']:.2%}")
-```
+## 🔗 Links
 
-## ⚠️ Limitations & Considerations
+- **Yahoo Finance API**: [yfinance documentation](https://pypi.org/project/yfinance/)
+- **Beta in Finance**: [Investopedia - Beta](https://www.investopedia.com/terms/b/beta.asp)
+- **CAPM Model**: [Corporate Finance Institute](https://corporatefinanceinstitute.com/resources/valuation/capm-capital-asset-pricing-model/)
 
-1. **Data Dependency**: Relies on Yahoo Finance data availability
-2. **Market Hours**: Some tickers may have limited historical data
-3. **Currency Effects**: International stocks affected by FX movements
-4. **Statistical Assumptions**: Assumes linear relationship between stock and market
-5. **Look-back Period**: Beta changes over time; use appropriate historical period
+## 📞 Support
 
-## 🔧 Troubleshooting
+For questions, issues, or suggestions:
+- Open an issue on GitHub
+- Check existing issues for solutions
+- Refer to the methodology section for calculation details
 
-### Common Issues
-- **"Unable to download data"**: Check ticker symbols and internet connection
-- **"No Close column found"**: Verify ticker format for your market
-- **"Few data points"**: Increase time period or change interval
-- **Low R-squared**: Consider sector-specific index or longer time period
+---
 
-### Data Quality Checks
-- Minimum 30 observations recommended
-- R-squared > 0.3 for reliable results
-- Check for structural breaks or outliers in data
-
-## 📝 License & Disclaimer
-
-This tool is for educational and analytical purposes. Financial data is provided by Yahoo Finance. Users should verify results and consider multiple data sources for investment decisions. Beta calculations are historical and may not predict future performance.
+**Disclaimer**: This tool is for educational and research purposes. Always verify calculations and consult financial professionals for investment decisions.
