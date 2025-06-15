@@ -1,16 +1,39 @@
-# Beta Calculator with Risk-Free Rate
+# Cost of Equity Calculator with CAPM Analysis
 
-A comprehensive Python tool for calculating stock beta coefficients with confidence intervals and government bond yields for DCF valuation and CAPM cost of equity analysis.
+A comprehensive Python tool for calculating the cost of equity using the Capital Asset Pricing Model (CAPM). This tool provides beta calculation with statistical analysis, automatic equity risk premium detection, and government bond yield integration for complete CAPM-based cost of equity analysis.
 
 ## 🚀 Features
 
-- **Beta Calculation**: Regression-based beta using logarithmic returns
-- **Confidence Intervals**: Statistical confidence intervals for beta estimates (90%, 95%, 99%)
-- **Government Bond Yields**: Automatic download of 10-year government bond yields as risk-free rate
-- **CAPM Cost of Equity**: Complete cost of equity calculation using CAPM formula
+- **Beta Calculation**: Regression-based beta using logarithmic returns with comprehensive statistics
+- **Government Bond Integration**: Excel-based 10-year government bond yields database
+- **Automatic ERP Detection**: Country-specific equity risk premiums from comprehensive database
+- **Complete CAPM Analysis**: Full cost of equity calculation with step-by-step formula breakdown
 - **Multiple Markets**: Support for stocks and indices from major global markets
-- **Data Export**: Export results to Excel with comprehensive data sheets
-- **Visualization**: Regression plots with confidence bands
+- **Professional Excel Export**: Comprehensive results with formula documentation
+- **Visual Analysis**: Beta regression plots with statistical indicators
+
+## 📊 CAPM Formula Implementation
+
+The tool implements the Capital Asset Pricing Model:
+
+**Cost of Equity (Re) = Risk-free Rate (Rf) + Beta (β) × Equity Risk Premium (ERP)**
+
+### Example Calculation Output:
+```
+COST OF EQUITY (CAPM):
+==================================================
+FORMULA: Re = Rf + β × ERP
+==================================================
+Risk-free rate (Rf): 4.50%
+Beta (β): 1.2543
+Equity Risk Premium (ERP): 4.33% (United States)
+==================================================
+CALCULATION:
+Re = 4.50% + 1.2543 × 4.33%
+Re = 4.50% + 5.43%
+Re = 9.93%
+==================================================
+```
 
 ## 📊 Supported Markets
 
@@ -31,16 +54,21 @@ A comprehensive Python tool for calculating stock beta coefficients with confide
 - **FTSE 100 (UK)**: ^FTSE
 - **Nikkei (Japan)**: ^N225
 
-### Government Bonds (10-Year)
-- **USA**: US Treasury (^TNX)
-- **Germany**: German Bund (^TNX-DE)
-- **Italy**: Italian BTP (ITALY10Y-EUR)
-- **France**: French OAT (FRANCE10Y-EUR)
-- **Spain**: Spanish Bond (SPAIN10Y-EUR)
-- **UK**: UK Gilt (^TNXUK)
-- **Japan**: Japanese Bond (^TNX-JP)
-- **Canada**: Canadian Bond (^TNX-CA)
-- **Australia**: Australian Bond (^TNX-AU)
+## 💾 Required Excel Databases
+
+### 1. Bond.xlsx
+Contains 10-year government bond yields by country:
+- **Column 1**: Country names
+- **Column 3**: "Yield 10y" (10-year government bond yields)
+- **Format**: Supports both decimal (0.0450) and percentage (4.50%) formats
+- **Coverage**: Major developed and emerging markets
+
+### 2. ERP 2025.xlsx  
+Contains equity risk premiums by country:
+- **Column 1**: Country names
+- **Column 4**: "Total Equity Risk Premium"
+- **Source**: Professional ERP database with country-specific risk assessments
+- **Updates**: Annual updates recommended for accuracy
 
 ## 🛠️ Installation
 
@@ -49,142 +77,197 @@ A comprehensive Python tool for calculating stock beta coefficients with confide
 pip install yfinance pandas numpy matplotlib scipy openpyxl
 ```
 
-### Clone Repository
-```bash
-git clone https://github.com/yourusername/beta-calculator.git
-cd beta-calculator
+### Required Files Setup
+```
+your-project-folder/
+├── CostofEquity.py          # Main Python script
+├── Bond.xlsx                # Government bond yields database
+└── ERP 2025.xlsx           # Equity risk premium database
 ```
 
 ## 🔧 Usage
 
 ### Basic Usage
 ```bash
-python beta_calculator.py
+python CostofEquity.py
 ```
 
-### Interactive Prompts
-The program will guide you through:
+### Interactive Workflow
+The program guides you through a structured 4-step process:
 
-1. **Stock Selection**: Enter ticker symbol (e.g., AAPL, ENI.MI)
-2. **Market Index**: Choose benchmark index (e.g., ^GSPC, FTSEMIB.MI)
-3. **Risk-Free Rate**: Select country for 10-year bond or enter manually
-4. **Time Period**: Choose analysis period (recommended: 2y)
-5. **Data Interval**: Select frequency (recommended: 1d)
-6. **Confidence Intervals**: Optional statistical confidence bands
-7. **Market Risk Premium**: Required for cost of equity calculation
-
-### Example Session
+#### **Step 1: Beta Calculation**
 ```
-Stock ticker: AAPL
-Index ticker: ^GSPC
-Country for 10Y bond: USA
-Period: 2y
-Interval: 1d
-Calculate confidence intervals? y
-Confidence level: 0.95
-Market risk premium (%): 6.5
+Enter stock ticker: AAPL
+Enter index ticker: ^GSPC
+Period: 10y (default)
+Interval: 1mo (default)
 ```
 
-## 📈 Output
+#### **Step 2: Risk-Free Rate Selection**
+```
+Available countries in bond database:
+AUSTRALIA       (4.25%) | AUSTRIA         (2.96%) | BELGIUM         (3.12%)
+CANADA          (3.84%) | FRANCE          (3.15%) | GERMANY         (2.53%)
+ITALY           (3.75%) | JAPAN           (1.41%) | USA             (4.50%)
+...
+
+Enter country name for 10Y bond yield: USA
+✅ Risk-free rate set to: 4.50%
+```
+
+#### **Step 3: Equity Risk Premium**
+```
+✅ Country detected: United States
+✅ Equity Risk Premium: 4.33%
+Use automatic ERP (4.33%)? (y/n): y
+```
+
+#### **Step 4: Cost of Equity Calculation**
+```
+COST OF EQUITY (CAPM):
+==================================================
+FORMULA: Re = Rf + β × ERP
+==================================================
+Final Result: 9.93%
+```
+
+## 📈 Output Features
 
 ### Console Output
-```
-BETA RESULTS:
-Beta: 1.2543
-Alpha: 0.002147
-R-squared: 0.7431
-Correlation: 0.8620
-Observations: 504
-
-BETA WITH CONFIDENCE INTERVALS:
-Beta: 1.2543
-95% CI: [1.1205, 1.3881]
-Standard Error: 0.067321
-T-statistic: 18.634
-P-value: 0.000000
-R-squared: 0.7431
-
-COST OF EQUITY (CAPM):
-Risk-free rate: 4.25%
-Beta: 1.2543
-Market risk premium: 6.50%
-Cost of Equity: 12.40%
-95% CI: [11.53%, 13.27%]
-```
+- **Beta Statistics**: Comprehensive regression analysis
+- **Step-by-step CAPM**: Formula with actual values substituted
+- **Quality Indicators**: R-squared, p-values, sample size
+- **Professional Summary**: Ready-to-use cost of equity rate
 
 ### Excel Export
-- **Results Sheet**: All calculated metrics and statistics
-- **Stock Data**: Historical stock price data
-- **Index Data**: Historical index data
-- **Bond Data**: Government bond yield data (if available)
-- **Returns**: Calculated logarithmic returns
+The tool generates a comprehensive Excel file with multiple sheets:
+
+#### **1. CAPM_Results Sheet**
+| Metric | Value | Percentage |
+|--------|-------|------------|
+| CAPM_Formula | Re = Rf + β × ERP | |
+| Risk_Free_Rate_Rf | 0.0450 | 4.50% |
+| Beta | 1.2543 | 1.2543 |
+| Equity_Risk_Premium_ERP | 0.0433 | 4.33% |
+| Cost_of_Equity_Re | 0.0993 | 9.93% |
+
+#### **2. CAPM_Calculation Sheet**
+| Step | Calculation | Description |
+|------|-------------|-------------|
+| Formula | Re = Rf + β × ERP | CAPM Cost of Equity Formula |
+| Substitution | Re = 4.50% + 1.2543 × 4.33% | Substituting actual values |
+| Risk Premium Component | Re = 4.50% + 5.43% | Beta × ERP calculation |
+| Final Result | Re = 9.93% | Final Cost of Equity |
+
+#### **3. Additional Sheets**
+- **Stock_Data**: Historical stock price data
+- **Index_Data**: Historical market index data  
+- **Returns_Data**: Calculated logarithmic returns
 
 ## 📋 Methodology
 
 ### Beta Calculation
-- Uses **logarithmic returns** for better statistical properties
-- **Linear regression**: Stock returns vs. Market returns
+- **Returns**: Logarithmic returns for better statistical properties
+- **Regression**: Ordinary Least Squares (OLS) regression
+- **Period**: 10-year default for long-term perspective
+- **Frequency**: Monthly data to reduce noise
 - **Formula**: β = Cov(Rs, Rm) / Var(Rm)
 
-### Confidence Intervals
-- **T-distribution** based confidence intervals
-- **Formula**: β ± t-critical × Standard Error
-- Degrees of freedom: n - 2
+### Statistical Output
+- **Beta coefficient**: Systematic risk measure
+- **R-squared**: Model explanatory power
+- **T-statistic**: Statistical significance
+- **P-value**: Probability testing
+- **Standard error**: Estimation precision
+- **Correlation**: Linear relationship strength
 
-### CAPM Cost of Equity
-- **Formula**: Cost of Equity = Rf + β × (Rm - Rf)
-- **Rf**: Risk-free rate (10-year government bond)
-- **β**: Calculated beta coefficient
-- **Market Risk Premium**: User-provided based on research
+### Risk-Free Rate
+- **Source**: 10-year government bond yields
+- **Database**: Excel-based for reliability and control
+- **Coverage**: Major developed and emerging markets
+- **Currency**: Local currency yields for each country
+
+### Equity Risk Premium  
+- **Country-specific**: Tailored to local market conditions
+- **Professional grade**: Based on comprehensive risk assessment
+- **Automatic detection**: Index symbol → Country → ERP lookup
+- **Manual override**: User can input custom ERP if needed
 
 ## 🎯 Use Cases
 
 ### DCF Valuation
-- Calculate cost of equity for discount rate
-- Assess systematic risk of investment
-- Validate beta reliability with confidence intervals
+- **Primary use**: Cost of equity for discount rate in DCF models
+- **Integration ready**: Output directly usable in valuation spreadsheets
+- **Documentation**: Complete audit trail for valuation reports
+- **Professional standard**: Follows industry best practices
 
 ### Portfolio Management
-- Risk assessment and portfolio construction
-- Benchmark comparison and tracking error analysis
-- Performance attribution
+- **Risk assessment**: Systematic risk analysis for portfolio construction
+- **Benchmark comparison**: Beta vs. market indices
+- **Performance attribution**: Risk-adjusted return analysis
 
 ### Academic Research
-- Empirical finance studies
-- Risk factor analysis
-- Market efficiency testing
+- **Empirical finance**: Beta estimation and CAPM testing
+- **Market analysis**: Cross-country risk premium studies
+- **Methodology validation**: Statistical robustness testing
 
-## 📚 Market Risk Premium Guidance
+### Investment Analysis
+- **Equity valuation**: Cost of equity for investment decisions
+- **Risk management**: Systematic risk measurement
+- **Due diligence**: Professional-grade financial analysis
 
-### Typical Ranges by Region
-- **USA**: 5.0% - 7.0%
-- **Europe (Developed)**: 5.0% - 8.0%
-- **Emerging Markets**: 7.0% - 12.0%
-- **Conservative Estimate**: 6.0%
-- **Historical Long-term Average**: 6.5%
+## 📚 CAPM Components Guide
 
-### Sources for Research
-- **Academic Studies**: Damodaran, Ibbotson, Morningstar
-- **Investment Banks**: Goldman Sachs, Morgan Stanley equity risk premium surveys
-- **Central Banks**: Federal Reserve, ECB financial stability reports
-- **Professional Services**: PwC, EY valuation surveys
+### Risk-Free Rate Selection
+Choose the government bond yield that matches your analysis:
+- **Same country**: Use the country where the company operates
+- **Same currency**: Match the currency of cash flows
+- **10-year maturity**: Standard practice for long-term valuations
+- **Current rates**: Use recent yields for accuracy
+
+**Typical Current Ranges:**
+- **USA**: 4.0% - 5.0%
+- **Germany**: 2.0% - 3.0%
+- **Italy**: 3.5% - 4.5%
+- **Japan**: 0.5% - 1.5%
+- **Emerging markets**: 5.0% - 15.0%
+
+### Equity Risk Premium Guidance
+ERP represents the additional return investors require for equity risk:
+
+**By Region:**
+- **USA/Western Europe**: 4.0% - 6.0%
+- **Eastern Europe**: 6.0% - 9.0%
+- **Emerging Asia**: 6.0% - 10.0%
+- **Latin America**: 7.0% - 12.0%
+- **Africa/Middle East**: 8.0% - 15.0%
+
+**Research Sources:**
+- **Academic**: Damodaran (NYU), Ibbotson Associates
+- **Professional**: PwC, EY, KPMG valuation surveys
+- **Market data**: Central bank reports, investment bank research
 
 ## ⚠️ Important Notes
 
 ### Data Quality
-- Data sourced from Yahoo Finance
-- Some international bonds may have limited availability
-- Manual input option available for all parameters
+- **Excel databases**: Ensure Bond.xlsx and ERP 2025.xlsx are in the same directory
+- **File format**: Use proper Excel format (.xlsx), not CSV
+- **Data updates**: Update ERP database annually for accuracy
+- **Bond yields**: Verify current market rates periodically
 
 ### Statistical Considerations
-- Minimum 30 observations recommended for reliable beta
-- R-squared indicates explanatory power of market relationship
-- Confidence intervals help assess beta reliability
+- **Sample size**: Minimum 30 observations recommended (2.5 years monthly data)
+- **R-squared interpretation**: 
+  - **> 0.50**: Reliable beta for DCF use
+  - **0.30-0.50**: Use with caution, consider industry beta
+  - **< 0.30**: Consider alternative beta sources
+- **Statistical significance**: P-value < 0.05 indicates reliable beta
 
-### DCF Usage Recommendations
-- **R² > 0.5**: Reliable beta for DCF
-- **R² 0.3-0.5**: Use with caution, consider industry beta
-- **R² < 0.3**: Consider alternative beta sources
+### CAPM Limitations
+- **Assumptions**: Single-factor model, may not capture all risk
+- **Market efficiency**: Assumes efficient markets
+- **Beta stability**: Beta can change over time
+- **Alternative models**: Consider Fama-French or other multi-factor models for comprehensive analysis
 
 ## 🤝 Contributing
 
@@ -200,9 +283,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
+- **CAPM Theory**: [Corporate Finance Institute](https://corporatefinanceinstitute.com/resources/valuation/capm-capital-asset-pricing-model/)
+- **Beta Analysis**: [Investopedia - Beta](https://www.investopedia.com/terms/b/beta.asp)
+- **DCF Valuation**: [McKinsey Valuation Guide](https://www.mckinsey.com/business-functions/strategy-and-corporate-finance/our-insights/valuation)
 - **Yahoo Finance API**: [yfinance documentation](https://pypi.org/project/yfinance/)
-- **Beta in Finance**: [Investopedia - Beta](https://www.investopedia.com/terms/b/beta.asp)
-- **CAPM Model**: [Corporate Finance Institute](https://corporatefinanceinstitute.com/resources/valuation/capm-capital-asset-pricing-model/)
 
 ## 📞 Support
 
@@ -213,4 +297,4 @@ For questions, issues, or suggestions:
 
 ---
 
-**Disclaimer**: This tool is for educational and research purposes. Always verify calculations and consult financial professionals for investment decisions.
+**Disclaimer**: This tool is for educational and professional analysis purposes. Always verify calculations and consult financial professionals for investment decisions. CAPM results should be used as part of a comprehensive valuation analysis.
